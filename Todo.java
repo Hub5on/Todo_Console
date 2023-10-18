@@ -36,7 +36,9 @@ public class Todo {
                             taskCounter++;
                             break;
                         case 3:
-                            // Do nothing in this version
+                            System.out.print("\033[H\033[2J");
+                            System.out.flush();
+                            deleteTask(scanner, tasks, taskStatus);
                             break;
                         case 4:
                             exitApplication = true;
@@ -53,7 +55,9 @@ public class Todo {
     }
 
     public static void menu() {
-        System.out.println("Menu");
+        System.out.println("+----------------------+");
+        System.out.println("|       Todo App       |");
+        System.out.println("+----------------------+");
         System.out.println("1. Check your todo list");
         System.out.println("2. Add new todo");
         System.out.println("3. Delete task");
@@ -105,6 +109,36 @@ public class Todo {
             }
         } else if (taskNumberToEdit != -1) {
             System.out.println("Task number not found. Task status remains unchanged.");
+        }
+    }
+
+    public static void deleteTask(Scanner scanner, Dictionary<Integer, String> tasks, Dictionary<Integer, Boolean> taskStatus) {
+        System.out.println("+---+-------------------+---------+");
+        System.out.println("| # |        Task       |   Done  |");
+        System.out.println("+---+-------------------+---------+");
+
+        Enumeration<Integer> keys = tasks.keys();
+        while (keys.hasMoreElements()) {
+            int taskNumber = keys.nextElement();
+            String task = tasks.get(taskNumber);
+            boolean completed = taskStatus.get(taskNumber);
+            String status = completed ? "Yes" : "No";
+            System.out.printf("| %-2d| %-17s | %-7s |\n", taskNumber, task, status);
+        }
+
+        System.out.println("+---+-------------------+---------+");
+
+        System.out.println("Enter the task number you want to delete (or type 'exit' to cancel): ");
+        System.out.print("> ");
+        int taskNumberToDelete = scanner.nextInt();
+        scanner.nextLine();
+        
+        if (tasks.get(taskNumberToDelete) != null) {
+            tasks.remove(taskNumberToDelete);
+            taskStatus.remove(taskNumberToDelete);
+            System.out.println("Task #" + taskNumberToDelete + " has been deleted.");
+        } else if (taskNumberToDelete != -1) {
+            System.out.println("Task number not found. No task has been deleted.");
         }
     }
 }
