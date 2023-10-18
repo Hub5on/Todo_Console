@@ -20,8 +20,13 @@ public class Todo {
                     scanner.nextLine();
                     switch (choice) {
                         case 1:
-                            
+                            System.out.print("\033[H\033[2J");
+                            System.out.flush();
+                            checkTodoList(tasks);
+                            System.out.println("Press Enter to return to menu");
+                            scanner.nextLine();
                             break;
+
                         case 2:
                             System.out.print("\033[H\033[2J");
                             System.out.flush();
@@ -33,10 +38,10 @@ public class Todo {
                             exitApplication = true;
                             break;
                         default:
-                            System.out.println("Błędny wybór. Wprowadź poprawną liczbę.");
+                            System.out.println("Bad choice. Enter the correct number.");
                     }
                 } catch (Exception e) {
-                    System.out.println("Błąd: " + e.getMessage());
+                    System.out.println("Error: " + e.getMessage());
                     scanner.nextLine();
                 }
             } while (!exitApplication);
@@ -60,5 +65,22 @@ public class Todo {
         }
         tasks.put(task, false);
     }
+
+    public static void checkTodoList(Dictionary<String, Boolean> tasks) {
+        System.out.println("+-------------------+---------+");
+        System.out.println("|        Task       |   Done  |");
+        System.out.println("+-------------------+---------+");
+    
+        Enumeration<String> keys = tasks.keys();
+        while (keys.hasMoreElements()) {
+            String task = keys.nextElement();
+            boolean completed = tasks.get(task);
+            String status = completed ? "Yes" : "No";
+            System.out.printf("| %-17s | %-7s |\n", task, status);
+        }
+    
+        System.out.println("+-------------------+---------+");
+    }
+    
     
 }
